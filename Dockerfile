@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:buster
 
 MAINTAINER Alexander Harkness (bearbin)
 
