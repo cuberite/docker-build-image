@@ -1,18 +1,26 @@
-FROM ubuntu:xenial
- 
-# Add LLVM 6.0 repository
-ADD https://apt.llvm.org/llvm-snapshot.gpg.key /root/gpg/llvm-snapshot.gpg.key
-RUN apt-key add /root/gpg/llvm-snapshot.gpg.key && \
-    echo "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main" >> /etc/apt/sources.list
- 
+FROM ubuntu:bionic
+
+# Install apt tools
+RUN apt-get update && \
+    apt-get install -y apt-transport-https ca-certificates gpg software-properties-common
+
+# Add cmake repository
+ADD https://apt.kitware.com/keys/kitware-archive-latest.asc \
+    /root/gpg/kitware-archive-latest.asc
+RUN gpg -o /etc/apt/trusted.gpg.d/kitware.gpg \
+        --dearmor /root/gpg/kitware-archive-latest.asc && \
+    echo "deb https://apt.kitware.com/ubuntu/ bionic main" >> /etc/apt/sources.list && \
+    apt-get update && apt-get install -y kitware-archive-keyring && \
+    rm /etc/apt/trusted.gpg.d/kitware.gpg
+
 # Install build dependencies
 RUN apt-get update && \
-    apt-get install -y git lua5.1 cmake clang-6.0 clang-tidy-6.0 python-yaml
+    apt-get install -y git lua5.1 cmake clang-8 clang-tidy-8 python-yaml
 
-RUN update-alternatives --install /usr/bin/clang      clang      /usr/bin/clang-6.0      600 && \
-    update-alternatives --install /usr/bin/clang++    clang++    /usr/bin/clang++-6.0    600 && \
-    update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-6.0 600 && \
-    update-alternatives --install /usr/bin/run-clang-tidy.py run-clang-tidy.py \
-        /usr/bin/run-clang-tidy-6.0.py 600 && \
+RUN update-alternatives --install /usr/bin/clang      clang      /usr/bin/clang-8      800 && \
+    update-alternatives --install /usr/bin/clang++    clang++    /usr/bin/clang++-8    800 && \
+    update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-8 800 && \
+    update-alternatives --install /usr/bin/run-clang-tidy run-clang-tidy \
+        /usr/bin/run-clang-tidy-8.py 800 && \
     update-alternatives --install /usr/bin/clang-apply-replacements clang-apply-replacements \
-        /usr/bin/clang-apply-replacements-6.0 600
+        /usr/bin/clang-apply-replacements-8 800
