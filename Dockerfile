@@ -15,12 +15,12 @@ RUN gpg -o /etc/apt/trusted.gpg.d/kitware.gpg \
 
 # Install build dependencies
 RUN apt-get update && \
-    apt-get install -y git lua5.1 cmake clang-8 clang-tidy-8 python-yaml
+    apt-get install -y git lua5.1 cmake clang-9 clang-tidy-9 python-yaml
 
-RUN update-alternatives --install /usr/bin/clang      clang      /usr/bin/clang-8      800 && \
-    update-alternatives --install /usr/bin/clang++    clang++    /usr/bin/clang++-8    800 && \
-    update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-8 800 && \
+RUN update-alternatives --install /usr/bin/clang      clang      /usr/bin/clang-9      900 && \
+    update-alternatives --install /usr/bin/clang++    clang++    /usr/bin/clang++-9    900 && \
+    update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-9 900 && \
     update-alternatives --install /usr/bin/run-clang-tidy run-clang-tidy \
-        /usr/bin/run-clang-tidy-8.py 800 && \
+        /usr/bin/run-clang-tidy-9.py 900 && \
     update-alternatives --install /usr/bin/clang-apply-replacements clang-apply-replacements \
-        /usr/bin/clang-apply-replacements-8 800
+        /usr/bin/clang-apply-replacements-9 900
